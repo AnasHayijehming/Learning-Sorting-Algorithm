@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Selection</title>
+		<link href="./css/css" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" type="text/css" href="../css/styleform.css">
+		<link rel="stylesheet" href="../css/stylesort.css">
+    <style>
+      body {
+        margin: 0px;
+        padding: 0px;
+      }
+	  input,select{
+			font: 25px Open Sans;
+			font-style: normal;
+			font-weight: 300;
+			border-color: #e88;
+			-webkit-box-shadow: 0 0 5px rgba(250+jj, 0, 0, .8);
+			border-radius:5px;
+			text-align: center	; 
+		}
+    </style>
+  </head>
+  <body>
+	<!--
+			HEADER
+		-->
+		<header id="header">
+			<nav id="sectionMenu">
+				<a href="../index.html" title="Welcom to Leanig" class="">WELCOM</a>
+				<a href="../sorting.htm" title="Leanig Sorting Algorithm " class="">Sorting Algorithm Animations</a>
+				<a href="./sp_select.html" title="Solve Problem " class="">Sample</a>
+				<a href="./ex_selection.html" title="Solve Problem " class="active">Solve Problem</a>
+			</nav>
+		</header>
+			<section id="sections">
+			<br>
+				<form name='sort' action='' method='post'>
+				Item Number :
+				<input type="number" name='length' step="1" min="3" max="10" value="3" onchange="box()" style="width:60px;"/>	
+				SPEED : <select name='value'  onchange="speed()" id="quick">
+					<option value='1'>LOW</option>
+					<option value='3'>MEDIUM</option>
+					<option value='5'>HIGH</option>
+				</select>
+				<div id='input'>
+					<input type='text' name='num0' value='' size='3' >
+					<input type='text' name='num1' value='' size='3' >
+					<input type='text' name='num2' value='' size='3' >
+				</div>
+				<input type='button' onclick="random()" value='Reload Number'>
+				<input type='button' onclick="sorting()" value='Sort'>
+				</form>
+
+				<canvas id='myCanvas' width='1200' height='500' ></canvas>
+			</section>
+			
+	<!--
+			FOOTER	
+		-->
+		<footer id="footer">
+			<p >Create by Anas Hajeechiming Copyright 2012</p>
+		</footer>
+  </body>
+</html>
+    <script>
+		var number = new Array(0,0,0,0,0,0,0,0,0,0);		
+		var i,j,length;
+		var temp = 0;
+		var min,min_id;
+		var n = 1;
+		var w = 100,h = 80;
+		var rang = 120;
+		var x=0,y=0,ii=0,jj=0;
+		var ch =0 ,k=0;
+		var sort,swap;
+		function speed()
+		{
+			n = document.getElementById("quick").value;
+			//alert(n);
+			clearInterval(sort);
+			clearInterval(swap);
+			sort = setInterval(selection, parseInt(2000/n));
+		}
+		function random()
+		{
+			var max =  document.forms["sort"]["length"].value;
+			var ss = "";
+			for(var b=0;b < max;b++)
+			{
+				ss = ss + "<input type='text' name='num"+b+"' value='"+ Math.floor(Math.random()*100)+"' size='3' required />";
+			}
+			document.getElementById("input").innerHTML = ss;	
+		}
+		
+		function box()
+		{
+			var max =  document.forms["sort"]["length"].value;
+			var ss = "";
+			for(var b=0;b < max;b++)
+			{
+				ss = ss + "<input type='text' name='num"+b+"' value='' size='3' >";
+			}
+			document.getElementById("input").innerHTML = ss;	
+		}
+		
+		function sorting()
+		{	
+			length = document.forms["sort"]["length"].value;
+			var str = "";
+			for(var t=0;t < length;t++)
+			{
+				number[t] =  parseInt(document.forms["sort"]["num"+t].value);
+				//str = str +" "+ number[t];
+			}
+			
+			i=0;
+			j=i;
+			min = number[i];
+			min_id = i;
+			draw();
+			x=0;y=0;ii=0;jj=0;ch =0 ;k=0;
+			clearInterval(sort);
+			clearInterval(swap);
+			sort = setInterval(selection,2000/n);
+		}
+		
+		function draw() {
+			var canvas = document.getElementById('myCanvas');
+			var context = canvas.getContext('2d');
+			//clear
+				context.clearRect(0, 0, canvas.width, canvas.height);
+			
+			for(var p=0; p < length;p++){
+				var cv = document.getElementById('myCanvas');
+				var ctx = cv.getContext('2d');
+				if(p == min_id)
+				{	ctx.beginPath();
+					ctx.shadowColor = '#999';
+					ctx.shadowBlur = 2;
+					ctx.shadowOffsetX = 10;
+					ctx.shadowOffsetY = 10;
+					//
+					ctx.strokeStyle = 'black';	
+					ctx.fillStyle='white';
+					ctx.lineWidth=3;
+					roundedRect(ctx,(10+rang*p)+x,50+jj,w,h,10,true,true);
+					
+					//draw shadow
+					ctx.shadowOffsetX = 0;
+					ctx.shadowOffsetY = 0;
+					ctx.closePath();
+				}
+				else if(p == i)
+				{
+					ctx.beginPath();
+					ctx.shadowColor = '#999';
+					ctx.shadowBlur = 2;
+					ctx.shadowOffsetX = 10;
+					ctx.shadowOffsetY = 10;
+					//
+					ctx.strokeStyle = 'black';	
+					ctx.fillStyle='white';
+					ctx.lineWidth=3;
+					roundedRect(ctx,(10+rang*p)+ii,50+jj,w,h,10,true,true);
+					
+					//draw shado
+					ctx.shadowOffsetX = 0;
+					ctx.shadowOffsetY = 0;
+					ctx.closePath();
+				}
+				else 
+				{
+					ctx.beginPath();
+					ctx.shadowColor = '#999';
+					ctx.shadowBlur = 2;
+					ctx.shadowOffsetX = 10;
+					ctx.shadowOffsetY = 10;
+					//
+					ctx.strokeStyle = 'black';	
+					ctx.fillStyle='white';
+					ctx.lineWidth=3;
+					roundedRect(ctx,10+rang*p,50,w,h,10,true,true);
+					//
+
+					//draw shadow
+					ctx.shadowOffsetX = 0;
+					ctx.shadowOffsetY = 0;
+					ctx.closePath();
+				}
+			}
+				
+			if(i < length ) {	
+				//draw block for value min
+				context.beginPath();
+				context.fillStyle = "Darkorange ";
+				roundedRect(ctx,10+rang*(min_id)+x,50+jj,w,h,10,true,false);
+				context.closePath();
+				//draw block for check 	
+				context.beginPath();
+				context.fillStyle = "Gold";
+				roundedRect(ctx,10+rang*(j)+ii,50+jj,w,h,10,true,false);
+				context.closePath();
+			}
+				
+			for(var p=0;p < i;p++)
+			{
+				//draw block for finish	
+				context.beginPath();
+				context.fillStyle = "red";
+				roundedRect(ctx,10+rang*(p),50,w,h,10,true,false);
+				context.closePath();
+			}
+			//comment 
+				context.beginPath();
+				context.fillStyle = 'black';
+				context.font="50px Arial";
+				//context.fillText("length = "+length,370,200);
+				//context.fillText("temp = "+temp,670,200);
+				context.fillText("Minimum = "+min,670,300);	
+				context.closePath()
+
+			for(var p=0; p < length;p++){
+				context.beginPath();
+				context.font="30px Arial"; 
+				context.fillStyle = 'black';
+				context.fillText(p+1,50+rang*p,40);
+				context.closePath();
+				
+				//draw number	
+				context.beginPath();
+				context.font=" 70px Arial ";
+				context.lineWidth = 7;
+				context.strokeStyle = 'black';
+				context.stroke();
+				
+				if(p == min_id)
+				{
+					if(number[p] > 9)
+					context.strokeText(number[p],(20+rang*p)+x,115+jj);
+					else
+					context.strokeText(number[p],(40+rang*p)+x,115+jj);
+				}
+				else if(p == i)
+				{
+					if(number[p] > 9)
+					context.strokeText(number[p],(20+rang*p)+ii,115+jj);
+					else
+					context.strokeText(number[p],(40+rang*p)+ii,115+jj);
+				}
+				else
+				{
+					if(number[p] > 9)
+					context.strokeText(number[p],20+rang*p,115);
+					else
+					context.strokeText(number[p],40+rang*p,115);
+				}
+				
+				
+				
+				//context.fillText("i = "+i,100,200);
+				//context.fillText("j = "+j,100,300);
+				context.closePath();
+				
+			}				
+		}
+		
+		var roundedRect=function(ctx,x,y,width,height,radius,fill,stroke)
+		{
+			ctx.save();	// save the context so we don't mess up others
+			ctx.beginPath();
+
+			// draw top and top right corner
+			ctx.moveTo(x+radius,y);
+			ctx.arcTo(x+width,y,x+width,y+radius,radius);
+
+			// draw right side and bottom right corner
+			ctx.arcTo(x+width,y+height,x+width-radius,y+height,radius); 
+
+			// draw bottom and bottom left corner
+			ctx.arcTo(x,y+height,x,y+height-radius,radius);
+
+			// draw left and top left corner
+			ctx.arcTo(x,y,x+radius,y,radius);
+
+			if(fill){
+			ctx.fill();
+			}
+			if(stroke){
+			//draw shadow
+				ctx.shadowOffsetX = 0;
+				ctx.shadowOffsetY = 0;
+			ctx.stroke();
+			}
+			ctx.restore();	// restore context to what it was on entry
+		}
+		
+		function drawswap() {
+			clearInterval(sort);
+				if(50+jj <= 150 && ch == 0)
+				{	
+					draw();
+					jj+=10;
+				}
+				else{
+					if((10+rang*(min_id))+x > (10+rang*i) )
+					{
+						draw();
+
+						x-=10;
+						ii+=10;
+					}
+					else if(40+jj >= 50)
+							{
+								draw();
+								jj-=10;
+								ch =1;
+							}	
+							else{
+								draw();
+								x=0;y=0;ii=0;jj=0;ch =0 ;
+								temp = number[i];
+								number[i] = number[min_id];
+								number[min_id] = temp;
+								i++;
+								j=i;
+								draw();
+								min = number[i];
+								min_id = i;		
+								clearInterval(swap);
+								sort = setInterval(selection,2000/n);
+								}	
+				}
+		}
+
+		function selection() {
+			if( j < length && i < length-1)
+			{	
+				if(number[j] < min)
+				{
+					min = number[j];
+					min_id = j;
+				}
+				
+				draw();
+				j++;
+				
+			}
+			else
+				if(i < length ) {
+					if(number[i] != number[min_id])
+					{	
+						j = i;
+						swap = setInterval(drawswap,50/n);
+					}
+					else
+					{
+						temp = number[i];
+						number[i] = number[min_id];
+						number[min_id] = temp;
+						i++;
+						j=i;
+						draw();
+						min = number[i];
+						min_id = i;	
+					}		
+				}
+				else {clearInterval(sort); }	
+		}		
+    </script>

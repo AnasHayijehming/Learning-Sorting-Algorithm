@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Shell Sort</title>
+	<link href="./css/css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" type="text/css" href="../css/styleform.css">
+	   <link rel="stylesheet" href="../css/style.css">
+
+<body class="dark">
+		<!--
+			HEADER
+		-->
+		<header id="header">
+			<nav id="sectionMenu">
+				<a href="../index.html" title="Welcom to Leanig" class="">WELCOM</a>
+				<a href="../sorting.htm" title="Leanig Sorting Algorithm " class="active">Sorting Algorithm Animations</a>
+				<a href="./sp_shell.html" title="Solve Problem " class="">Sample</a>
+				<a href="./ex_shell.html" title="Solve Problem " class="">Solve Problem</a>
+			</nav>
+		</header>
+		<header class="header">
+        <hgroup>
+            	<h1>การจัดเรียงข้อมูลแบบเชลล์  (Shell sort) </h1>
+        <h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;การจัดเรียงข้อมูลวิธีนี้ เป็นการนำการจัดเรียงข้อมูลแบบแทรกใส่มาปรับปรุง โดยมีหลักการคือ<br>
+			 จะแบ่งข้อมูลออกเป็นชุดๆ และจัดเรียงข้อมูลในแต่ะชุดโดยใช้การจัดเรียงแบบแทรกใส่ แล้วทำซ้ำโดย<br>
+			 ลดจำนวนชุดของข้อมูลลง ขั้นตอนการทำงานจะเป็นดังนี้<br>
+				1) แบ่งข้อมูลออกเป็นชุดๆ สมมติว่าแบ่งออกเป็น n ชุด  หรือก็คือ นำข้อมูลมาเก็บลงในตารางที่มี<br>
+				&nbsp;n คอลัมน์โดยจัดเรียงจากคอลัมน์ซ้ายไปขาว และจากแถวบนลงมาแถวล่าง<br>
+				2) จัดเรียงข้อมูลในแต่ละชุดโดยใช้การจัดเรียงแบบแทรกใส่ และนำข้อมูลที่จัดเรียงแล้วทั้งหมด<br>
+				&nbsp;มารวมกันใหม่ โดยนำข้อมูลในแต่ละแถวมาต่อกันให้เป็นแถวเดียว<br>
+				3) ทำซ้ำ 2 ขั้นตอนแรก แต่แบ่งข้อมูลออกให้มีจำนวนชุดน้อยลง ซึ่งอาจจะเป็น n-1 หรือ n-2 หรือ<br>
+				&nbsp;ค่าอื่นก็ได้ตามความเหมาะสม โดยทำซ้ำไปเรื่อยๆจนถึงการแบ่งข้อมูลออกเป็น 1 ชุด หรือก็คือ<br>
+				&nbsp;ไม่มีแบ่งข้อมูลนัั้นเอง และเมื่อจัดเรียงในรอบสุดท้าย ก็จะได้ข้อมูลที่จัดเรียงเรียบร้อยแล้วออกมา
+		</h2>
+
+        </hgroup>
+		</header>
+		<div class="info">
+
+		<!--
+			FOOTER	
+		-->
+		<footer id="footer">
+			<p >Create by Anas Hajeechiming Copyright 2012</p>
+		</footer>
+
+</body>
+</html>

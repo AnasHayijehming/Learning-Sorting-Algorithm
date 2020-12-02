@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Quick</title>
+		<link rel="stylesheet" type="text/css" href="../css/styleform.css">
+		<link rel="stylesheet" href="../css/stylesort.css">
+    <style>
+      body {
+        margin: 0px;
+        padding: 0px;
+      }
+	  input,select{
+			font: 25px Open Sans;
+			font-style: normal;
+			font-weight: 300;
+			border-color: #e88;
+			-webkit-box-shadow: 0 0 5px rgba(250+jj, 0, 0, .8);
+			border-radius:5px;
+			text-align: center	; 
+		}
+    </style>
+  </head>
+  <body>
+	<!--
+			HEADER
+		-->
+		<header id="header">
+			<nav id="sectionMenu">
+				<a href="../index.html" title="Welcom to Leanig" class="">WELCOM</a>
+				<a href="../sorting.htm" title="Leanig Sorting Algorithm " class="">Sorting Algorithm Animations</a>
+				<a href="./sp_quick.html" title="Solve Problem " class="">Sample</a>
+				<a href="./ex_quick.html" title="Solve Problem " class="active">Solve Problem</a>
+			</nav>
+		</header>
+			<section id="sections">
+				<br>
+				<form name='sort' action='' method='post'>
+				Item Number :
+				<input type="number" name='length' step="1" min="3" max="10" value="3" onchange="box()" style="width:60px;"/>	
+				SPEED : <select name='value'  onchange="speed()" id="quick">
+					<option value='1'>LOW</option>
+					<option value='3'>MEDIUM</option>
+					<option value='5'>HIGH</option>
+				</select>
+				<div id='input'>
+					<input type='text' name='num0' value='' size='1' >
+					<input type='text' name='num1' value='' size='1' >
+					<input type='text' name='num2' value='' size='1' >
+				</div>
+				<input type='button' onclick="random()" value='Reload Number'>
+				<input type='button' onclick="sorting()" value='Sort'>
+				</form>
+
+				<canvas id='myCanvas' width='850' height='400' ></canvas>
+				<canvas id='codesort' width='400' height='400' style="border:2px solid #d3d3d3; background-color:#ffffff;"></canvas>
+			</section>
+			
+	<!--
+			FOOTER	
+		-->
+		<footer id="footer">
+			<p >Create by Anas Hajeechiming Copyhigh 2012</p>
+		</footer>
+  </body>
+</html>
+    <script>
+		var number = new Array(0,0,0,0,0,0,0,0,0,0);		
+		var i,j,length;
+		var pivot,low,high;
+		var id;
+		var split;
+		var n = 1;
+		var w = 70,h = 60;
+		var rang = 80;
+		var x=0,y=0,ii=0,jj=0;
+		var ch =0 ,k=0,d=0;
+		var sort,swap;
+		function speed()
+		{
+			n = document.getElementById("quick").value;
+			////alert(n);
+			clearInterval(sort);
+			clearInterval(swap);
+			sort = setInterval(quick, parseInt(2000/n));
+		}
+		function random()
+		{
+			var max =  document.forms["sort"]["length"].value;
+			var ss = "";
+			for(var b=0;b < max;b++)
+			{
+				ss = ss + "<input type='text' name='num"+b+"' value='"+ Math.floor(Math.random()*100)+"' size='1' required />";
+			}
+			document.getElementById("input").innerHTML = ss;	
+		}
+		
+		function box()
+		{
+			var max =  document.forms["sort"]["length"].value;
+			var ss = "";
+			for(var b=0;b < max;b++)
+			{
+				ss = ss + "<input type='text' name='num"+b+"' value='' size='1' >";
+			}
+			document.getElementById("input").innerHTML = ss;	
+		}
+		
+		function sorting()
+		{	
+			length = document.forms["sort"]["length"].value;
+			var str = "";
+			for(var t=0;t < length;t++)
+			{
+				number[t] =  parseInt(document.forms["sort"]["num"+t].value);
+				//str = str +" "+ number[t];
+			}
+			low = 0;
+			high = length;
+			
+				pivot = number[high-1];
+				split = low;
+				i = low;
+				draw();
+				x=0;y=0;ii=0;jj=0;ch =0 ;
+				clearInterval(sort);
+				clearInterval(swap);
+				sort = setInterval(quick,2000/n);			
+		
+			
+		}
+		
+		function draw() {
+			var canvas = document.getElementById('myCanvas');
+			var context = canvas.getContext('2d');
+			//clear
+				context.clearRect(0, 0, canvas.width, canvas.height);
+			
+			for(var p=0; p < length ;p++){
+				if(p == i)
+				{	
+					context.beginPath();
+					context.shadowColor = '#999';
+					context.shadowBlur = 2;
+					context.shadowOffsetX = 7;
+					context.shadowOffsetY = 7;
+					//
+					context.strokeStyle = 'black';	
+					context.fillStyle='white';
+					context.lineWidth=3;
+					roundedRect(context,(10+rang*p)+x,50+jj,w,h,10,true,true);
+					//
+					//draw shadow
+					context.shadowOffsetX = 0;
+					context.shadowOffsetY = 0;
+					context.closePath();
+					//draw block for check 	
+					context.beginPath();
+					context.fillStyle = "red";
+					roundedRect(context,10+rang*(p)+x,50+jj,w,h,10,true,false);
+					context.closePath();
+				}
+				else if( p == split)
+					{
+					context.beginPath();
+					context.shadowBlur = 2;
+					context.shadowColor = '#999';
+					context.shadowOffsetX = 7;
+					context.shadowOffsetY = 7;
+					//
+					context.strokeStyle = 'black';	
+					context.fillStyle='white';
+					context.lineWidth=3;
+					roundedRect(context,(10+rang*p)+ii,50+jj,w,h,10,true,true);
+					//
+					//draw shadow
+					context.shadowOffsetX = 0;
+					context.shadowOffsetY = 0;
+					context.closePath();
+					//draw block for check 	
+					context.beginPath();
+					context.fillStyle = "gold";
+					roundedRect(context,10+rang*(p)+ii,50+jj,w,h,10,true,false);
+					context.closePath();
+					}
+					else if( p == high-1 )
+					{
+						context.beginPath();
+						context.shadowBlur = 2;
+						context.shadowColor = '#999';
+						context.shadowOffsetX = 7;
+						context.shadowOffsetY = 7;
+						//
+						context.strokeStyle = 'black';	
+						context.fillStyle='white';
+						context.lineWidth=3;
+						roundedRect(context,(10+rang*p),50,w,h,10,true,true);
+						//
+						//draw shadow
+						context.shadowOffsetX = 0;
+						context.shadowOffsetY = 0;
+						context.closePath();
+						//draw block for check 	
+						context.beginPath();
+						context.fillStyle = "green";
+						roundedRect(context,10+rang*(p),50,w,h,10,true,false);
+						context.closePath();
+					}
+					else {
+						context.beginPath();
+						context.shadowColor = '#999';
+						context.shadowBlur = 2;
+						context.shadowOffsetX = 7;
+						context.shadowOffsetY = 7;
+						//
+						context.strokeStyle = 'black';	
+						context.fillStyle='white';
+						context.lineWidth=3;
+						roundedRect(context,(10+rang*p),50,w,h,10,true,true);
+						//
+						//draw reset shadow
+						context.shadowOffsetX = 0;
+						context.shadowOffsetY = 0;
+						context.closePath();
+						}
+
+			}
+				
+				//comment 
+				context.beginPath();
+				context.font="30px Courier";
+				context.fillStyle = 'black';
+				context.fillText("pivot = "+(pivot)+" low = "+(low+1)+" high = "+(parseInt(high)+1)+"",50,300);
+				context.closePath()					
+
+			for(var p=0; p < length ;p++){
+				context.beginPath();
+				context.font="30px Arial"; 
+				context.fillStyle = 'black';
+				context.fillText(p+1,30+rang*p,40);
+				context.closePath();
+				
+				//draw number	
+				context.beginPath();
+				context.font="50px Arial ";
+				context.lineWidth = 4;
+				context.strokeStyle = 'black';
+				context.stroke();
+				
+				if(p == i)
+				{
+					if(number[p] > 9)
+					context.strokeText(number[p],(18+rang*p)+x,100+jj);
+					else
+					context.strokeText(number[p],(30+rang*p)+x,100+jj);
+				}
+				else if(p == split )
+				{
+					if(number[p] > 9)
+					context.strokeText(number[p],(18+rang*p)+ii,100+jj);
+					else
+					context.strokeText(number[p],(30+rang*p)+ii,100+jj);
+				}
+				else
+				{
+					if(number[p] > 9)
+					context.strokeText(number[p],18+rang*p,100);
+					else
+					context.strokeText(number[p],30+rang*p,100);
+				}
+				context.closePath();
+				
+				context.font="30px Courier";
+				context.fillStyle = 'black';
+				context.fillText("i = "+(i+1)+", split = "+(split+1),50,350);
+				
+			}				
+		}
+		
+		var roundedRect=function(context,x,y,width,height,radius,fill,stroke)
+		{
+			context.save();	// save the context so we don't mess up others
+			context.beginPath();
+
+			// draw top and top high corner
+			context.moveTo(x+radius,y);
+			context.arcTo(x+width,y,x+width,y+radius,radius);
+
+			// draw high side and bottom high corner
+			context.arcTo(x+width,y+height,x+width-radius,y+height,radius); 
+
+			// draw bottom and bottom low corner
+			context.arcTo(x,y+height,x,y+height-radius,radius);
+
+			// draw low and top low corner
+			context.arcTo(x,y,x+radius,y,radius);
+
+			if(fill){
+			context.fill();
+			}
+			if(stroke){
+			//draw shadow
+				context.shadowOffsetX = 0;
+				context.shadowOffsetY = 0;
+				context.stroke();
+			}
+			context.restore();	// restore context to what it was on entry
+		}
+		
+		function drawswap() {
+			clearInterval(sort);
+			
+				if(50+jj <= 150 && ch == 0)
+				{	
+					draw();
+					jj+=10;
+				}
+				else
+					if((10+rang*(i))+x > (10+rang*(split)) )
+					{
+						process(7) ;
+						draw();
+						x-=10;
+						ii+=10;
+					}
+					else if(40+jj >= 50)
+							{
+								draw();
+								jj-=10;
+								ch =1;
+							}	
+							else{
+								draw();
+								var temp = number[i];
+								number[i] = number[split];
+								number[split] = temp;
+								
+								process(8) ;
+								
+								x=0;y=0;ii=0;jj=0;ch =0 ;
+								clearInterval(swap);
+								sort = setInterval(quick,2000/n);
+								}
+		}
+		function quick() {
+				if( i < high-1)
+				{	
+					draw();
+					process(5) ;
+					if(number[i] < pivot)
+					{
+						swap = setInterval(drawswap,50/n);
+						split++;
+					}
+					i++;
+					setTimeout(function(){process(4);},500/n);
+					
+				} else {
+				
+						draw();
+						process(10) ;
+						var temp = number[high-1];
+						number[high-1] = number[split];
+						number[split] = temp;
+			
+						
+						setTimeout(function(){process(11);},300/n);
+						setTimeout(function(){process(12);},500/n);
+						setTimeout(function(){process(15);},500/n);
+						QuickSort(0, length);
+						draw();
+						clearInterval(sort);
+						
+					}
+		}
+		function QuickSort(low, high){
+			if (high-low <= 1){ draw();process(15);return;}
+			pivot = number[high-1];
+			split = low;
+			for (i=low; i<high-1; i++)
+			  if (number[i] <pivot)
+			  {
+				 var temp = number[i];
+				number[i] = number[split];
+				number[split] = temp;
+				 split++;
+			  }
+			var temp = number[high-1];
+			number[high-1] = number[split];
+			number[split] = temp;
+			QuickSort(low, split);
+			QuickSort(split+1, high);
+			draw();
+			process(15) ;
+			return;
+			
+		}
+		
+		function drawcode() {
+			var canvas = document.getElementById('codesort');
+			var context = canvas.getContext('2d');
+			//context.clearRect(0, 0, canvas.width, canvas.height);
+			
+			context.font="16px Courier";
+			context.fillStyle = 'black';
+			context.fillText("QuickSort(low, high){",10,20);
+			context.fillText("  if (high-low <= 1) return;",10,40);
+			context.fillText("  pivot = a[high-1];",10,60);
+			context.fillText("  split = low; ",10,80);
+			context.fillText("  for (i=low; i<high-1; i++)",10,100);
+			context.fillText("    if (a[i] <pivot)",10,120);
+			context.fillText("    {",10,140);
+			context.fillText("       swap a[i] and a[split];",10,160);
+			context.fillText(" 	     split++; ",10,180);
+			context.fillText("    }",10,200);
+			context.fillText("  swap a[high-1] and a[split];",10,220);
+			context.fillText("  QuickSort(low, split);",10,240);
+			context.fillText("  QuickSort(split+1, high);",10,260);
+			context.fillText("  return;",10,280);
+			context.fillText("}",10,300);
+			context.fillText("/*DONE*/ ",10,320);
+		}
+		
+		function process(y) {
+			var canvas = document.getElementById('codesort');
+			var context = canvas.getContext('2d');
+			context.clearRect(0, 0, canvas.width, canvas.height);
+			context.beginPath();
+			context.fillStyle = "rgba(255,255,0,1)";
+			context.fillRect(10,5+20*y, 380, 20);
+			context.closePath();
+			drawcode();	
+		}
+		process(0) ;
+    </script>

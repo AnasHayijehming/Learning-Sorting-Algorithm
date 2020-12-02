@@ -1,0 +1,51 @@
+body
+{ 
+	background-image: url(../images/white-gridbg.jpg) ;
+    no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+	
+
+}
+
+a {
+
+    -webkit-transition: all 250ms cubic-bezier(0.230, 1.000, 0.320, 1.000);
+    -moz-transition: all 250ms cubic-bezier(0.230, 1.000, 0.320, 1.000);
+    -ms-transition: all 250ms cubic-bezier(0.230, 1.000, 0.320, 1.000);
+    -o-transition: all 250ms cubic-bezier(0.230, 1.000, 0.320, 1.000);
+    transition: all 250ms cubic-bezier(0.230, 1.000, 0.320, 1.000);
+
+    text-decoration: none;
+}
+
+.header {
+
+   
+    position: absolute;
+	font-family:"Bitstream Vera Sans Mono",Monaco,"Lucida Console",monospace;
+    color: #333;
+    width: 100%;
+	line-height: 2;
+    top: 15%;
+	left: 10%
+}
+
+.header h1 {
+
+    letter-spacing: -1px;
+    font-weight: 500;
+    font-size: 36px;
+    margin: 0;
+}
+
+.header h2 {
+
+    font-weight: 400;
+    font-size: 20px;
+    color: rgba(0,0,0,0.7);
+    margin: 0;
+}
+
